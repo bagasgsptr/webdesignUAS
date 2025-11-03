@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri - MageRUN</title>
+    <link rel="icon" type="image/png" href="img/LOGO UTAMA.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+        <div class="logo">
+        <div class="mark"></div>
+        <div class="text">
+          <div style="font-weight:800">MageRUN</div>
+          <div style="font-size:0.8rem;color:var(--muted)">Jangan Mager, Ayo Lari</div>
+        </div>
+      </div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="about.html">Tentang</a></li>
+                <li><a href="services.html">Program</a></li>
+                <li><a href="portfolio.html">Gallery</a></li>
+                <li><a href="contact.html">Kontak</a></li>
+            </ul>
+            <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
+        </nav>
+    </header>
+    <main>
+        <section class="portfolio fade-in">
+            <h2>Gallery Kami</h2>
+            <div class="slider">
+                <div class="slides">
+                    <img src="img/1.jpg" alt="lari" onclick="openModal(this.src)">
+                    <img src="img/2.jpg" alt="lari" onclick="openModal(this.src)">
+                    <img src="img/3.jpg" alt="lari" onclick="openModal(this.src)">
+                    <img src="img/4.jpg" alt="lari" onclick="openModal(this.src)">
+                </div>
+                <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+                <button class="next" onclick="changeSlide(1)">&#10095;</button>
+            </div>
+        </section>
+        <div id="modal" class="modal">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modalImg" src="">
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 -  Created by Kelompok 1</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
