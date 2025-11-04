@@ -31,9 +31,17 @@ nav {
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: 600;
+  display: flex;
+  align-items: center; /* Biar logo & tulisan sejajar tengah */
+  gap: 10px; /* Jarak antara logo dan tulisan */
 }
+
+.logo-img {
+  width: 45px;   /* Atur ukuran logo */
+  height: 45px;
+  object-fit: contain; /* Biar logo tidak gepeng */
+}
+
 
 .nav-links {
     list-style: none;
@@ -63,7 +71,7 @@ nav {
 
 /* Main */
 main {
-    padding: 2rem;
+    padding: 3rem;
     text-align: center;
 }
 
@@ -274,6 +282,9 @@ footer {
 
 /* Responsif */
 @media (max-width: 768px) {
+    .logo .text {
+        display: none;
+    }
     .nav-links {
         display: none;
         flex-direction: column;
