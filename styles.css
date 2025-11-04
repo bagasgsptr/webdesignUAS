@@ -59,6 +59,40 @@ nav {
     transition: color 0.3s ease;
 }
 
+/* Efek animasi underline */
+.nav-links a {
+    position: relative;
+    padding-bottom: 3px;
+}
+
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 2px;
+    background: #ffd700;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.nav-links a:hover {
+    color: #ffd700;
+}
+
+/* Link saat halaman aktif */
+.nav-links a.active {
+    color: #ffd700;
+}
+
+.nav-links a.active::after {
+    width: 100%;
+}
+
 .nav-links a:hover {
     color: #ffd700;
 }
@@ -81,6 +115,7 @@ main {
     padding: 4rem 2rem;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    
 }
 
 .hero h1 {
@@ -306,4 +341,36 @@ footer {
     .slides img {
         width: 100%;
     }
+}
+
+/* Warna background per halaman */
+
+/* Beranda */
+.page-home {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Tentang */
+.page-about {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+}
+
+/* Program */
+.page-services {
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+}
+
+/* Gallery */
+.page-portfolio {
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+}
+
+/* Event Lari */
+.page-events {
+  background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+}
+
+/* Kontak */
+.page-contact {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
 }
