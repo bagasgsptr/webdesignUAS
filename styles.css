@@ -347,30 +347,30 @@ footer {
 
 /* Beranda */
 .page-home {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(#764ba2);
 }
 
 /* Tentang */
 .page-about {
-  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  background: linear-gradient(#fad0c4);
 }
 
 /* Program */
 .page-services {
-  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  background: linear-gradient(#fda085);
 }
 
 /* Gallery */
 .page-portfolio {
-  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+  background: linear-gradient(#fbc2eb);
 }
 
 /* Event Lari */
 .page-events {
-  background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+  background: linear-gradient(#185a9d);
 }
 
 /* Kontak */
 .page-contact {
-  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  background: linear-gradient(#fcb69f);
 }
