@@ -1,0 +1,296 @@
+<?php
+<?php
+require_once 'config.php';
+?>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - MageRUN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fa;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-read {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .badge-replied {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-delete {
+            background: #f5576c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #d9495a;
+        }
+
+        .btn-view {
+            background: #667eea;
+            color: white;
+            margin-right: 0.5rem;
+        }
+
+        .btn-view:hover {
+            background: #5568d3;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-content h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .close {
+            float: right;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .info {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+        }
+
+        .info strong {
+            color: #667eea;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #999;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📧 Dashboard Pesan Kontak</h1>
+
+        <div id="messagesContainer">
+            <p class="no-data">⏳ Loading...</p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Detail Pesan</h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // Load messages
+        async function loadMessages() {
+            try {
+                const response = await fetch('/api/contact.php');
+                const data = await response.json();
+
+                const container = document.getElementById('messagesContainer');
+
+                if (!data.success || data.count === 0) {
+                    container.innerHTML = '<p class="no-data">📭 Belum ada pesan</p>';
+                    return;
+                }
+
+                let html = '<table><thead><tr><th>Nama</th><th>Email</th><th>Pesan</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead><tbody>';
+
+                data.data.forEach(msg => {
+                    const date = new Date(msg.created_at).toLocaleDateString('id-ID');
+                    const preview = msg.message.substring(0, 50) + '...';
+
+                    html += `<tr>
+                        <td>${msg.name}</td>
+                        <td>${msg.email}</td>
+                        <td>${preview}</td>
+                        <td><span class="badge badge-${msg.status}">${msg.status}</span></td>
+                        <td>${date}</td>
+                        <td>
+                            <button class="btn btn-view" onclick="viewMessage(${msg.id})">👁️ Lihat</button>
+                            <button class="btn btn-delete" onclick="deleteMessage(${msg.id})">🗑️ Hapus</button>
+                        </td>
+                    </tr>`;
+                });
+
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('messagesContainer').innerHTML = '<p class="no-data">❌ Error loading messages</p>';
+            }
+        }
+
+        // View message detail
+        async function viewMessage(id) {
+            try {
+                const response = await fetch(`/api/contact.php?path=${id}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const msg = data.data;
+                    const date = new Date(msg.created_at).toLocaleDateString('id-ID', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    document.getElementById('modalBody').innerHTML = `
+                        <div class="info"><strong>Nama:</strong> ${msg.name}</div>
+                        <div class="info"><strong>Email:</strong> ${msg.email}</div>
+                        <div class="info"><strong>Tanggal:</strong> ${date}</div>
+                        <div class="info"><strong>Status:</strong> <span class="badge badge-${msg.status}">${msg.status}</span></div>
+                        <div class="info"><strong>Pesan:</strong><p>${msg.message}</p></div>
+                    `;
+
+                    document.getElementById('messageModal').classList.add('active');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('messageModal').classList.remove('active');
+        }
+
+        // Delete message
+        async function deleteMessage(id) {
+            if (!confirm('Yakin ingin menghapus pesan ini?')) return;
+
+            try {
+                const response = await fetch(`/api/contact.php?path=${id}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('✅ Pesan berhasil dihapus');
+                    loadMessages();
+                } else {
+                    alert('❌ ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error menghapus pesan');
+            }
+        }
+
+        // Load messages saat page load
+        window.addEventListener('load', loadMessages);
+    </script>
+</body>
+</html>

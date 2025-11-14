@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MageRUN | Beranda</title>
     <link rel="icon" type="image/png" href="img/LOGO UTAMA.png">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="page-home">
     <header>
         <nav>
-        <div class="logo">
-        <img src="img/LOGO UTAMA.png" alt="MageRUN Logo" class="logo-img">
-        <div class="mark"></div>
-        <div class="text">
-          <div style="font-weight:800">MageRUN</div>
-          <div style="font-size:0.8rem;color:var(--muted)">Jangan Mager, Ayo Lari</div>
-        </div>
-      </div>
+            <div class="logo">
+                <img src="img/LOGO UTAMA.png" alt="MageRUN Logo" class="logo-img">
+                <div class="mark"></div>
+                <div class="text">
+                    <div style="font-weight:800">MageRUN</div>
+                    <div style="font-size:0.8rem;color:var(--muted)">Jangan Mager, Ayo Lari</div>
+                </div>
             </div>
             <ul class="nav-links">
                 <li><a href="index.html" class="active">Beranda</a></li>
@@ -28,20 +28,91 @@
                 <li><a href="events.html">Event</a></li>
                 <li><a href="contact.html">Kontak</a></li>
             </ul>
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </div>
             <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
         </nav>
     </header>
+
     <main>
+        <!-- Hero Section -->
         <section class="hero fade-in">
-            <h1 style="color:antiquewhite;">Selamat Datang di Website MageRUN</h1>
-            <h2 style="color: aquamarine;">Ayo ubah rasa malas menjadi semangat!</h2>
-            <p>MageRUN hadir untuk menemani perjalananmu menuju gaya hidup sehat dan aktif.</p>
-            <a href="contact.html" class="btn">Come and join our team!</a>
+            <div class="hero-content">
+                <h1 style="color:antiquewhite;">Selamat Datang di Website MageRUN</h1>
+                <h2 style="color: aquamarine;">Ayo ubah rasa malas menjadi semangat!</h2>
+                <p>MageRUN hadir untuk menemani perjalananmu menuju gaya hidup sehat dan aktif.</p>
+                <a href="contact.html" class="btn btn-primary">
+                    <i class="fas fa-arrow-right"></i> Come and join our team!
+                </a>
+            </div>
+            <div class="hero-animation">
+                <div class="floating-shape shape-1"></div>
+                <div class="floating-shape shape-2"></div>
+                <div class="floating-shape shape-3"></div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats">
+            <div class="stat-card">
+                <h3>500+</h3>
+                <p>Member Aktif</p>
+            </div>
+            <div class="stat-card">
+                <h3>50+</h3>
+                <p>Event Tahunan</p>
+            </div>
+            <div class="stat-card">
+                <h3>100km</h3>
+                <p>Total Lari</p>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <h2>Mengapa Bergabung dengan MageRUN?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Komunitas Solid</h3>
+                    <p>Bergabunglah dengan ribuan pelari yang bersemangat</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-calendar"></i>
+                    <h3>Event Rutin</h3>
+                    <p>Acara lari setiap minggu dengan berbagai tema</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-medal"></i>
+                    <h3>Prestasi</h3>
+                    <p>Raih achievement dan badge eksklusif</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-heartbeat"></i>
+                    <h3>Kesehatan</h3>
+                    <p>Tingkatkan stamina dan kesehatan Anda</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta">
+            <h2>Siap Memulai Petualangan?</h2>
+            <p>Jangan biarkan malas mengalahkanmu. Mulai hari ini!</p>
+            <a href="contact.html" class="btn btn-secondary">Daftar Sekarang</a>
         </section>
     </main>
+
     <footer>    
-        <p>&copy; 2025 -  Created by Kelompok 1</p>
+        <p>&copy; 2025 - Created by Kelompok 1</p>
+        <div class="social-links">
+            <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+        </div>
     </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
