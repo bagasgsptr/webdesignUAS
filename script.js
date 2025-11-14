@@ -1,4 +1,4 @@
-// ===== TOGGLE MENU MOBILE =====
+// Toggle menu mobile
 function toggleMenu() {
     const navLinks = document.querySelector('.nav-links');
     navLinks.classList.toggle('active');
@@ -11,7 +11,7 @@ function toggleMenu() {
     });
 }
 
-// ===== DARK MODE TOGGLE =====
+// Dark Mode Toggle
 function toggleTheme() {
     document.body.classList.toggle('dark-mode');
     
@@ -36,14 +36,12 @@ window.addEventListener('load', () => {
     if (isDarkMode) {
         document.body.classList.add('dark-mode');
         const themeToggle = document.querySelector('.theme-toggle i');
-        if (themeToggle) {
-            themeToggle.classList.remove('fa-moon');
-            themeToggle.classList.add('fa-sun');
-        }
+        themeToggle.classList.remove('fa-moon');
+        themeToggle.classList.add('fa-sun');
     }
 });
 
-// ===== SLIDER PORTFOLIO =====
+// Slider di Portfolio
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slides img');
 
@@ -52,10 +50,7 @@ function showSlide(index) {
     if (index >= slides.length) currentSlide = 0;
     if (index < 0) currentSlide = slides.length - 1;
     const offset = -currentSlide * 100;
-    const slidesContainer = document.querySelector('.slides');
-    if (slidesContainer) {
-        slidesContainer.style.transform = `translateX(${offset}%)`;
-    }
+    document.querySelector('.slides').style.transform = `translateX(${offset}%)`;
 }
 
 function changeSlide(direction) {
@@ -64,20 +59,21 @@ function changeSlide(direction) {
 }
 
 // Auto-slide setiap 5 detik (opsional)
-if (slides.length > 0) {
-    setInterval(() => {
+setInterval(() => {
+    if (slides.length > 0) {
         changeSlide(1);
-    }, 5000);
-}
+    }
+}, 5000);
 
-// ===== MODAL UNTUK GAMBAR =====
+// Modal untuk gambar
 function openModal(src) {
     const modal = document.getElementById('modal');
     const modalImg = document.getElementById('modalImg');
     
-    if (modal && modalImg) {
+    if (modal) {
         modal.style.display = 'flex';
         modalImg.src = src;
+        // Smooth scroll ke modal
         document.body.style.overflow = 'hidden';
     }
 }
@@ -105,7 +101,7 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-// ===== ANIMASI FADE-IN SAAT SCROLL =====
+// Animasi fade-in saat scroll dengan Intersection Observer
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -100px 0px'
@@ -138,7 +134,7 @@ function handleScroll() {
 window.addEventListener('scroll', handleScroll);
 window.addEventListener('load', handleScroll);
 
-// ===== SMOOTH SCROLL UNTUK ANCHOR LINKS =====
+// Smooth scroll untuk anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -152,28 +148,18 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// ===== COUNTER ANIMASI UNTUK STATS =====
+// Counter animasi untuk stats section
 function animateCounter(element, target) {
     let current = 0;
     const increment = target / 30;
-    const originalText = element.textContent;
-    
     const timer = setInterval(() => {
         current += increment;
         if (current >= target) {
             current = target;
             clearInterval(timer);
         }
-        
-        // Format number dengan suffix
-        let suffix = '';
-        if (originalText.includes('+')) {
-            suffix = '+';
-        } else if (originalText.includes('km')) {
-            suffix = 'km';
-        }
-        
-        element.textContent = Math.floor(current) + suffix;
+        // Format number untuk tampilan yang lebih baik
+        element.textContent = Math.floor(current) + (element.textContent.includes('+') ? '+' : element.textContent.includes('km') ? 'km' : '');
     }, 50);
 }
 
@@ -200,12 +186,11 @@ if (statsSection) {
     statsObserver.observe(statsSection);
 }
 
-// ===== VALIDASI FORMULIR KONTAK DENGAN DATABASE =====
+// Validasi formulir kontak dengan feedback elegan
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
-    contactForm.addEventListener('submit', async function(e) {
+    contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        
         const name = document.getElementById('name')?.value.trim();
         const email = document.getElementById('email')?.value.trim();
         const message = document.getElementById('message')?.value.trim();
@@ -218,66 +203,47 @@ if (contactForm) {
         
         // Validasi field kosong
         if (!name || !email || !message) {
-            showFeedback('❌ Harap isi semua field dengan benar.', 'error', feedback);
+            feedback.textContent = '❌ Harap isi semua field dengan benar.';
+            feedback.style.color = '#f5576c';
             return;
         }
         
         // Validasi format email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            showFeedback('❌ Format email tidak valid.', 'error', feedback);
+            feedback.textContent = '❌ Format email tidak valid.';
+            feedback.style.color = '#f5576c';
             return;
         }
         
         // Validasi panjang pesan
         if (message.length < 10) {
-            showFeedback('❌ Pesan minimal 10 karakter.', 'error', feedback);
+            feedback.textContent = '❌ Pesan minimal 10 karakter.';
+            feedback.style.color = '#f5576c';
             return;
         }
         
-        // Disable button dan show loading
+        // Simulasi pengiriman
         submitBtn.textContent = '⏳ Mengirim...';
         submitBtn.disabled = true;
         
-        try {
-            const response = await fetch('/api/contact.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email, message }),
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                showFeedback('✅ Pesan berhasil dikirim! Terima kasih.', 'success', feedback);
-                contactForm.reset();
-                
-                // Hapus pesan feedback setelah 5 detik
-                setTimeout(() => {
-                    feedback.textContent = '';
-                }, 5000);
-            } else {
-                showFeedback(data.message || '❌ Gagal mengirim pesan', 'error', feedback);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            showFeedback('❌ Terjadi kesalahan. Coba lagi.', 'error', feedback);
-        } finally {
+        // Simulasi delay 2 detik
+        setTimeout(() => {
+            feedback.textContent = '✅ Pesan berhasil dikirim! Terima kasih.';
+            feedback.style.color = '#4caf50';
             submitBtn.textContent = '✉️ Kirim';
             submitBtn.disabled = false;
-        }
+            contactForm.reset();
+            
+            // Hapus pesan feedback setelah 5 detik
+            setTimeout(() => {
+                feedback.textContent = '';
+            }, 5000);
+        }, 2000);
     });
 }
 
-// Helper function untuk tampilkan feedback
-function showFeedback(message, type, feedbackElement) {
-    feedbackElement.textContent = message;
-    feedbackElement.style.color = type === 'error' ? '#f5576c' : '#4caf50';
-}
-
-// ===== ACTIVE NAVIGATION LINK =====
+// Active nav link berdasarkan halaman saat ini
 function setActiveNav() {
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     const navLinks = document.querySelectorAll('.nav-links a');
@@ -292,7 +258,7 @@ function setActiveNav() {
 
 window.addEventListener('load', setActiveNav);
 
-// ===== SCROLL TO TOP BUTTON =====
+// Scroll to top button
 function createScrollToTopButton() {
     const button = document.createElement('button');
     button.id = 'scrollToTop';
@@ -334,20 +300,95 @@ function createScrollToTopButton() {
             behavior: 'smooth'
         });
     });
-    
-    // Hover effect
-    button.addEventListener('mouseover', () => {
-        button.style.transform = 'scale(1.1)';
-    });
-    
-    button.addEventListener('mouseout', () => {
-        button.style.transform = 'scale(1)';
-    });
 }
 
 window.addEventListener('load', createScrollToTopButton);
 
-// ===== CONSOLE WELCOME MESSAGE =====
+// Loading animation
+window.addEventListener('load', () => {
+    document.body.style.opacity = '1';
+});
+
+// Console welcome message
 console.log('%cMageRUN Website 🏃‍♂️', 'font-size: 20px; font-weight: bold; color: #667eea;');
 console.log('%cJangan mager, ayo lari! 💪', 'font-size: 14px; color: #764ba2;');
-console.log('%c© 2025 - Kelompok 1', 'font-size: 12px; color: #999;');
+
+// ...existing code...
+
+// Validasi formulir kontak dengan feedback elegan
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const name = document.getElementById('name')?.value.trim();
+        const email = document.getElementById('email')?.value.trim();
+        const message = document.getElementById('message')?.value.trim();
+        const feedback = document.getElementById('feedback');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // Reset feedback
+        feedback.textContent = '';
+        feedback.style.color = '';
+        
+        // Validasi field kosong
+        if (!name || !email || !message) {
+            feedback.textContent = '❌ Harap isi semua field dengan benar.';
+            feedback.style.color = '#f5576c';
+            return;
+        }
+        
+        // Validasi format email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            feedback.textContent = '❌ Format email tidak valid.';
+            feedback.style.color = '#f5576c';
+            return;
+        }
+        
+        // Validasi panjang pesan
+        if (message.length < 10) {
+            feedback.textContent = '❌ Pesan minimal 10 karakter.';
+            feedback.style.color = '#f5576c';
+            return;
+        }
+        
+        // Simulasi pengiriman ke server
+        submitBtn.textContent = '⏳ Mengirim...';
+        submitBtn.disabled = true;
+        
+        try {
+            const response = await fetch('/api/contact.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, email, message }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                feedback.textContent = '✅ Pesan berhasil dikirim! Terima kasih.';
+                feedback.style.color = '#4caf50';
+                contactForm.reset();
+                
+                // Hapus pesan feedback setelah 5 detik
+                setTimeout(() => {
+                    feedback.textContent = '';
+                }, 5000);
+            } else {
+                feedback.textContent = data.message || '❌ Gagal mengirim pesan';
+                feedback.style.color = '#f5576c';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            feedback.textContent = '❌ Terjadi kesalahan. Coba lagi.';
+            feedback.style.color = '#f5576c';
+        } finally {
+            submitBtn.textContent = '✉️ Kirim';
+            submitBtn.disabled = false;
+        }
+    });
+}
+
+// ...existing code...
